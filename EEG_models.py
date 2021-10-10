@@ -10,7 +10,7 @@ from tensorflow.keras.constraints import max_norm
 from tensorflow.keras import backend as K
 from tensorflow.keras import regularizers
 
-
+#MODEL1 EEGNET
 def EEGNet(nb_classes, Chans=64, Samples=128,
            dropoutRate=0.5, kernLength=64, F1=8,
            D=2, F2=16, norm_rate=0.25, dropoutType='Dropout'):
@@ -113,7 +113,7 @@ def EEGNet(nb_classes, Chans=64, Samples=128,
 
     return Model(inputs=input1, outputs=softmax)
 
-
+#MODEL2 ShallowConvNet
 def square(x):
     return K.square(x)
 
@@ -166,7 +166,7 @@ def ShallowConvNet(nb_classes, Chans, Samples, dropoutRate=0.5, weight_decay=0.1
 
     return Model(inputs=input_main, outputs=softmax)
 
-
+#MODEL3 DeepConvNet
 def DeepConvNet(nb_classes, Chans=64, Samples=256,
                 dropoutRate=0.5, weight_decay=1):
     """ Keras implementation of the Deep Convolutional Network as described in
@@ -233,47 +233,14 @@ def DeepConvNet(nb_classes, Chans=64, Samples=256,
     return Model(inputs=input_main, outputs=softmax)
 
 
-def ConvLstmNet(nb_classes, Chans, Samples, dropoutRate=0.5, weight_decay=1):
-    # CNN+LSTM Model test
-    input_main = Input((Chans, Samples, 1))
-    block1 = Conv2D(128, (1, 40), padding='same', kernel_regularizer=regularizers.l2(weight_decay),
-                    input_shape=(Chans, Samples, 1),
-                    kernel_constraint=max_norm(2., axis=(0, 1, 2)))(input_main)
-    block1 = BatchNormalization(epsilon=1e-05, momentum=0.1)(block1)
-    block1 = Activation('elu')(block1)
-    block1 = AveragePooling2D(pool_size=(1, 40), strides=(1, 20))(block1)
-    block1 = Dropout(dropoutRate)(block1)
 
-    block2 = Conv2D(128, (Chans, 1), kernel_regularizer=regularizers.l2(weight_decay),
-                    kernel_constraint=max_norm(2., axis=(0, 1, 2)))(block1)
-    block2 = BatchNormalization(epsilon=1e-05, momentum=0.1)(block2)
-    block2 = Activation('elu')(block2)
-    block2 = MaxPooling2D(pool_size=(1, 2), strides=(1, 2))(block2)
-    block2 = Dropout(dropoutRate)(block2)
-
-    print('block2: ', block2)
-    # todo: add CNN block:
-    # todo: visualize model training
-
-    reshape1 = Reshape((9, 128))(block2)
-
-    lstm1 = LSTM(128, return_sequences=True)(reshape1)
-    lstm1 = Dropout(dropoutRate)(lstm1)
-
-    lstm2 = LSTM(64)(lstm1)
-    lstm2 = Dropout(dropoutRate)(lstm2)
-    dense = Dense(nb_classes, kernel_constraint=max_norm(0.5))(lstm2)
-    softmax = Activation('softmax')(dense)
-
-    model = Model(inputs=input_main, outputs=softmax)
-    model.summary()
-    return model
-
-
-def cnnlstm2(nb_classes, Chans, Samples, dropoutRate=0.5, weight_decay=1):
+#MODEL4 CNN-LSTM
+def cnnlstm(nb_classes, Chans, Samples, dropoutRate=0.5, weight_decay=1):
+	"""
+		the models includes two-layer convolution and two-layer LSTM
+	"""
+	
     input1 = Input(shape=(Chans, Samples, 1))
-
-    ##################################################################
     block1 = Conv2D(50, (1, 50), padding='same', kernel_regularizer=regularizers.l2(weight_decay),
                     input_shape=(Chans, Samples, 1),
                     use_bias=False)(input1)
