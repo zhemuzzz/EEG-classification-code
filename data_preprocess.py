@@ -1,7 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import h5py
-
+from collections.abc import Iterable
 
 datapath = '...' # data file path
 def data_load(index):
