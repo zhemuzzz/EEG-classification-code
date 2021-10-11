@@ -3,15 +3,15 @@ import tensorflow as tf
 import numpy as np
 import h5py
 import os
-from EEG_models import EEGNet, ShallowConvNet, square, log, DeepConvNet, cnnlstm
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras import optimizers, Model
 from tensorflow.keras.callbacks import ReduceLROnPlateau
 from tensorflow.keras.utils import get_custom_objects
 from matplotlib import pyplot as plt
 
+from EEG_models import EEGNet, ShallowConvNet, square, log, DeepConvNet, cnnlstm
 from data_preprocess import data_load, get_k_fold_data, flatten_test, easy_shuffle, split_data
-
+from eeg_visualize import test_visualize
 
 def gpu_start():
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
