@@ -3,3 +3,7 @@
 eeg_models.py 文件里包括了 4种神经网络模型， ShallowCNN, deepCNN, EEGNet, CNN--LSTM
 
 data_preprocess.py 包括了数据加载，数据划分，得到测试数据，训练数据等
+
+test_results.py 包括了 准确率acc, TP,FP,TN,FN,  敏感性 特异性 AUC 等指标
+
+eeg_visualize.py 包括了 网络中间层的输出数据， 显著图梯度数据提取； 可以保存为mat格式进一步处理
