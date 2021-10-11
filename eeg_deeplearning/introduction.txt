@@ -1,0 +1,5 @@
+运行 main.py 可以开始 训练模型，测试模型，并进行可视化；  
+
+eeg_models.py 文件里包括了 4种神经网络模型， ShallowCNN, deepCNN, EEGNet, CNN--LSTM
+
+data_preprocess.py 包括了数据加载，数据划分，得到测试数据，训练数据等
